@@ -1,6 +1,6 @@
 import { expect } from 'chai'; // imports assertion style from chai
 import { JSDOM } from 'jsdom';
-import { addTaskToList } from '../src/app.js'; // imports function from app.js
+import * as app from '../src/app.js'; // imports function from app.js
 
 /* JSDOM is used to create a virtual DOM environment in memory, mimicking the structure and behavior of a web page's DOM
 */
@@ -16,12 +16,13 @@ describe('To-Do List', function() {
     const dom = new JSDOM('<!doctype html><html><body><ul id="tasks"></ul></body></html>');
     document = dom.window.document;
     taskList = document.getElementById('tasks');
+    app.applyCompletedTaskStyle(document); // Use `app.applyCompletedTaskStyle` to access the function
   });
 
   it('should add a new task to the list', function() {
     const task = 'Buy groceries';
 
-    const newTaskItem = addTaskToList(task, document);
+    const newTaskItem = app.addTaskToList(task, document); // Use `app.addTaskToList`
 
     // Assertion to check if the task was added
     expect(taskList.children.length).to.equal(1);
@@ -31,18 +32,21 @@ describe('To-Do List', function() {
   it('should return the new task item element', function() {
     const task = 'Wash the car';
 
-    const newTaskItem = addTaskToList(task, document);
+    const newTaskItem = app.addTaskToList(task, document);
 
     expect(newTaskItem).to.be.an.instanceof(document.defaultView.HTMLElement);
     expect(newTaskItem.textContent).to.equal(task);
   });
 
   it('should apply the completed task style', function() {
-    applyCompletedTaskStyle(document);
+    // applyCompletedTaskStyle(document);
+    const task = 'Finish the report';
+    const newTaskItem = app.addTaskToList(task, document); // Use `app.addTaskToList`
 
     const style = document.querySelector('style');
     expect(style).to.not.be.null;
     expect(style.textContent).to.include('.completed');
+
   });
 });
 
